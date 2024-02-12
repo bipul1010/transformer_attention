@@ -11,9 +11,11 @@ def pre_compute_complex_theta_pos(
     m = torch.arange(seq_len)  ##seq_len
     prod = torch.outer(m, theta_vector)  ## (seq_len,embed_dim/2)
 
-    complex_theta_pos = torch.polar(torch.ones(*prod.shape), prod)
-
     ## (seq_len,embed_dim/2)
+    complex_theta_pos = torch.polar(torch.ones(*prod.shape), prod)
+    ## (seq_len,embed_dim/2) - > ## (seq_len,embed_dim/2,2)
+    complex_theta_pos = torch.view_as_real(complex_theta_pos)
+
     return complex_theta_pos
 
 
@@ -28,7 +30,7 @@ class RotaryPositionalEncoding(nn.Module):
         self.seq_len = seq_len
 
         ##(seq_len,d_model/2)
-        com_theta_pos = pre_compute_complex_theta_pos(self.d_model, self.seq_len)   
+        com_theta_pos = pre_compute_complex_theta_pos(self.d_model, self.seq_len)
 
         self.register_buffer("rpe", com_theta_pos)
 
@@ -39,7 +41,7 @@ class RotaryPositionalEncoding(nn.Module):
         x_complex = torch.view_as_complex(x.reshape(*x.shape[:-1], -1, 2))
 
         # (batch,seq_len,d_model/2) * (seq_len,d_model/2) - > (batch,seq_len,d_model/2)
-        prod = x_complex * self.rpe[: x.shape[1], :]
+        prod = x_complex * torch.view_as_complex(self.rpe[: x.shape[1], :, :])
 
         # (batch,seq_len,d_model/2) -> (batch,seq_len,d_model/2,2)
         x_rotary_embed = torch.view_as_real(prod)
