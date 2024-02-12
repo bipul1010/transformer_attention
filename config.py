@@ -10,7 +10,7 @@ def get_config():
         "lr": 10**-4,
         "seq_len": 350,
         "d_model": 512,
-        "base_path": "/Users/bipulvaibhav/Documents/AI/openai/attention_rotary_embedding",
+        "base_path": "/Users/bipulvaibhav/Documents/AI/openai/transformer_attention",
         "datasource": "opus_books",
         "lang_src": "en",
         "lang_tgt": "it",

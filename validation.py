@@ -9,7 +9,7 @@ def greedy_output(encoder_input, model, src_mask, tokenizer_tgt, max_length, dev
     decoder_input = (
         torch.tensor([tokenizer_tgt.token_to_id("[SOS]")]).unsqueeze(0).to(device)
     )  ##(1,seq_length) -since here batch is 1 for validation
-    encoder_output = model.encode(
+    encoder_output = model.module.encode(
         encoder_input, src_mask
     )  ## (batch,seq_length,d_model)
 
@@ -20,14 +20,14 @@ def greedy_output(encoder_input, model, src_mask, tokenizer_tgt, max_length, dev
 
         attn_mask = generate_square_subsequent_mask(decoder_input.shape[1]).to(device)
 
-        decoder_output = model.decode(
+        decoder_output = model.module.decode(
             x=decoder_input,
             encoder_output=encoder_output,
             src_mask=src_mask,
             tgt_mask=None,
             attn_mask=attn_mask,
         )  ##(batch,seq_length,d_model)
-        projection_output = model.projection(
+        projection_output = model.module.projection(
             decoder_output
         )  ## (batch,seq_length,d_model) -> (batch,seq_length,vocab_size)
 

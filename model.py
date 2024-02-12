@@ -233,9 +233,7 @@ class DecoderBlock(nn.Module):
         # self.kv_cache.update(xk=k, xv=v, batch_size=batch_size, start_pos=start_pos)
 
         # keys, values = self.kv_cache.get(batch_size=batch_size, start_pos=start_pos + seq_len)
-        # x = x + self.sa(
-        #     q, keys, values, key_padding_mask=tgt_mask, attn_mask=causal_mask
-        # )
+        x = x + self.sa(q, k, v, key_padding_mask=tgt_mask, attn_mask=causal_mask)
 
         ##2nd residual connnection
 

@@ -7,6 +7,10 @@ from datasets import load_dataset
 from torch.utils.data import random_split, DataLoader
 from dataset import BilingualDataset
 
+# Distributed Training
+import torch.distributed as dist
+from torch.utils.data.distributed import DistributedSampler
+
 
 def get_all_sentences(ds, lang):
     for item in ds:
@@ -76,9 +80,17 @@ def get_dataset(config):
     )
 
     train_dataloader = DataLoader(
-        train_ds, batch_size=config["batch_size"], shuffle=True
+        train_ds,
+        batch_size=config["batch_size"],
+        shuffle=False,
+        sampler=DistributedSampler(
+            train_ds,
+            shuffle=True,
+        ),
     )
-    val_dataloader = DataLoader(val_ds, batch_size=1, shuffle=True)
+    val_dataloader = DataLoader(
+        val_ds, batch_size=1, shuffle=True
+    )  ## this is because we need to run validation on global rank 0
 
     return train_dataloader, val_dataloader, tokenizer_src, tokenizer_tgt
 
