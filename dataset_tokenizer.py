@@ -26,6 +26,7 @@ def get_or_build_tokenizer(ds, lang, config):
         )
         tokenizer.pre_tokenizer = Whitespace()
         tokenizer.train_from_iterator(get_all_sentences(ds, lang), trainer=trainer)
+        print(f"Tokenizer Path: {str(tokenizer_path)}")
         tokenizer.save(str(tokenizer_path))
     else:
         tokenizer = Tokenizer.from_file(str(tokenizer_path))
