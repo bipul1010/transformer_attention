@@ -46,7 +46,10 @@ def train(config):
         tokenizer_tgt.get_vocab_size(),
     )
     model = get_model(
-        src_vocab_size=src_vocab_size, tgt_vocab_size=tgt_vocab_size, config=config
+        src_vocab_size=src_vocab_size,
+        tgt_vocab_size=tgt_vocab_size,
+        config=config,
+        device=device,
     ).to(device)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=config["lr"], eps=1e-9)
