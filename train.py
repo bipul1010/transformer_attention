@@ -222,7 +222,7 @@ if __name__ == "__main__":
     # sys.exit()
 
     assert config["local_rank"] != -1, "Local Rank can't be <0"
-    init_process_group(backend="nccl")
+    init_process_group(backend="gloo")
     torch.cuda.set_device(config["local_rank"])
 
     train(config)
