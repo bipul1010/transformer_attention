@@ -291,7 +291,15 @@ class Transformer(nn.Module):
         embed_x = self.src_embed(x)
         return self.encoder(embed_x, src_mask)
 
-    def decode(self, x, encoder_output, src_mask, tgt_mask, attn_mask, start_pos):
+    def decode(
+        self,
+        x,
+        encoder_output,
+        src_mask,
+        tgt_mask,
+        attn_mask,
+        start_pos: Optional[int] = -1,
+    ):
         embed_x = self.tgt_embed(x)
         return self.decoder(
             embed_x, encoder_output, src_mask, tgt_mask, attn_mask, start_pos
