@@ -8,7 +8,7 @@ def get_config():
         "batch_size": 10,
         "num_epochs": 100,
         "lr": 10**-4,
-        "seq_len": 300,
+        "seq_len": 350,
         "d_model": 512,
         "base_path": "/Users/bipulvaibhav/Documents/AI/openai/transformer_attention",
         "datasource": "opus_books",
